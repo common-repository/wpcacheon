@@ -1,0 +1,281 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+#dashboard_right_now a.dashicons-performance:before,
+#dashboard_right_now span.dashicons-performance:before {
+  content: url("../images/icon.png");
+  /* "\f311"; */
+}
+
+/*---------------------------------------------------------------------------------------------
+*
+*  Settings page
+*
+*---------------------------------------------------------------------------------------------*/
+@media only screen and (max-width: 1200px) {
+  div .overview-box-top {
+    width: 100%;
+    margin: 0px;
+    float: none;
+  }
+  div .overview-box-top ul {
+    width: 70%;
+    margin: auto;
+    display: block;
+  }
+  div .overview-box-bottom {
+    width: 100%;
+    float: left;
+    margin: 20px 0px 0px 0px;
+  }
+  div .overview-box-bottom form ul {
+    width: 70%;
+    margin: auto;
+    display: block;
+  }
+  ul.fixed li {
+    clear: both;
+  }
+  p.submit {
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 1220px) {
+  div.overview-text-left {
+    width: 130px;
+  }
+}
+
+@media only screen and (max-width: 960px) {
+  ul.fixed li div {
+    width: auto;
+  }
+  ul.fixed li {
+    clear: both;
+  }
+}
+
+@media only screen and (max-width: 830px) {
+  ul li input.custom-medium {
+    width: fit-content;
+    width: -webkit-fill-available;
+    width: -moz-available;
+  }
+  ul li select {
+    margin-top: -5px;
+  }
+  ul li div.overview-setting-desc {
+    padding-top: 5px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  div div.tab-box {
+    width: auto;
+  }
+  div div.sidebar {
+    float: none;
+  }
+}
+
+@media only screen and (min-width: 500px) {
+  .sel-minification {
+    float: right;
+  }
+}
+
+.overview-box-top {
+  float: left;
+  margin: 15px 20px 20px 10px;
+  width: 45%;
+  background: #fff;
+}
+.overview-box-bottom {
+  float: right;
+  margin: 15px 20px 20px 10px;
+  width: 45%;
+  background: #fff;
+}
+.overview-box-head {
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 7px 0px;
+  background: #69ade2;
+  border: 1px solid #e1e1e1;
+  margin-bottom: 20px;
+}
+/*.overview-box-line {
+  margin-left: 15px;
+}*/
+.overview-box-line > li {
+  line-height: 32px;
+  margin-bottom: 20px;
+  padding: 0px 10px;
+}
+.settings-box-line > li {
+  line-height: 32px;
+
+  background: #f9f9f9;
+  padding: 10px;
+}
+
+.overview-text {
+  float: left;
+  width: 100%;
+  line-height: 20px;
+  padding-top: 20px;
+}
+.overview-text-left {
+  float: left;
+  /* background: url("../images/check.svg") no-repeat left center; */
+  padding-left: 15px;
+  width: 150px;
+  font-weight: 600;
+}
+.overview-text-right {
+  float: left;
+}
+.overview-setting-desc {
+  padding-left: 24px;
+  color: #999;
+  line-height: 20px;
+}
+.save-settings-button {
+  margin-left: 18px !important;
+  height: 30px !important;
+  padding: 1px 20px !important;
+  margin-top: 10px !important;
+}
+.clear-both {
+  clear: both;
+}
+.content-max-width {
+  margin: 0 auto;
+  position: relative;
+  max-width: 840px;
+}
+.row-text {
+  font-size: 13px;
+  color: #555;
+}
+.sidebar-link {
+  text-decoration: none;
+}
+.margin-r-300 {
+  margin-top: 10px;
+  margin-right: 260px;
+}
+
+/*---------------------------------------------------------------------------------------------
+*
+*  Tabs
+*
+*---------------------------------------------------------------------------------------------*/
+/* For tabs */
+h2.nav-tab-wrapper {
+  border-bottom: 0px !important;
+  padding-bottom: 0 !important;
+  padding-left: 0px !important;
+}
+h2 .nav-tab {
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: normal;
+  padding: 10px 10px !important;
+  border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -webkit-border-radius: 5px 5px 0 0;
+}
+.nav-tab-active,
+.nav-tab-active:hover {
+  background: #fff;
+  font-weight: bold !important;
+  border-bottom: 0px;
+  color: #000;
+  border-top: 2px solid #28b370;
+  color: #0073aa;
+}
+.tab-box {
+  float: left;
+  width: 100%;
+}
+.tab-box-div {
+  min-height: 400px;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 40px 20px 20px 20px;
+  border-radius: 0 5px 5px 5px;
+  -moz-border-radius: 0 5px 5px 5px;
+  -webkit-border-radius: 0 5px 5px 5px;
+}
+
+/*---------------------------------------------------------------------------------------------
+*
+*  Sidebar
+*
+*---------------------------------------------------------------------------------------------*/
+.sidebar {
+  float: right;
+  /*border: 1px solid #ccc;*/
+  /*background: #fff;*/
+  margin-right: -260px;
+  margin-top: 42px;
+  width: 240px;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+.sidebar > div {
+  /*padding: 15px;*/
+}
+.sidebar h2 {
+  font-size: 16px;
+  text-align: center;
+  color: #888;
+  line-height: 24px;
+}
+#upgrade {
+  background-color: #fff;
+  padding: 15px;
+  color: #000;
+  border: 1px solid #ccc;
+  border-radius: 0 5px 5px 5px;
+  -moz-border-radius: 0 5px 5px 5px;
+  -webkit-border-radius: 0 5px 5px 5px;
+}
+#upgrade h1 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #000;
+  text-align: center;
+}
+#upgrade ul {
+  font-size: 14px;
+  margin-left: 30px;
+}
+#upgrade a {
+  color: #3281a8;
+}
+#upgrade img {
+  width: 110px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+#upgrade ul li {
+  margin: 5px 0 10px 0;
+}
+#upgrade ul li span {
+  margin-left: -31px;
+  font-size: 26px;
+  margin-right: 6px;
+}
+
+.rate-us {
+  text-decoration: none;
+  color: #000 !important;
+}

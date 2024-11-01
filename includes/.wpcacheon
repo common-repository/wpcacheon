@@ -1,0 +1,154 @@
+##############################################
+## BEGIN WPCacheOn .htaccess optimizations  ##
+##############################################
+# Use UTF-8 encoding for anything served text/plain or text/html
+AddDefaultCharset UTF-8
+
+# Force UTF-8 for a number of file formats
+<IfModule mod_mime.c>
+    AddCharset UTF-8 .atom .css .js .json .rss .vtt .xml
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Unset ETag and set Cache-Control headers
+    Header unset ETag
+    Header unset Pragma
+    FileETag None
+
+    # 1 Month for most static assets
+    <FilesMatch "\.(css|htc|js|asf|asx|wax|wmv|wmx|avi|bmp|class|divx|doc|docx|eot|exe|gif|gz|gzip|ico|x-icon|jpg|jpeg|jpe|mdb|mid|midi|mov|qt|mp3|m4a|mp4|m4v|mpeg|mpg|mpe|mpp|otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|png|pot|pps|ppt|pptx|ra|ram|svg|svgz|swf|tar|tif|tiff|ttf|ttc|wav|wma|wri|xla|xls|xlsx|xlt|xlw|zip|javascript|x-javascript|xhtml+xml|x-shockwave-flash|rss+xml|atom+xml|webp|webm|x-component|x-font-ttf|opentype|x-font-woff|x-font-woff2|svg+xml|vnd.ms-fontobject)$">
+        Header set Cache-Control "max-age=2592000, public"
+    </FilesMatch>
+
+    <FilesMatch ".(x?html?|php)$">
+        Header set Cache-Control "private, must-revalidate"
+    </FilesMatch>
+
+    #Default cache
+    Header set Expires "max-age=A10368000, public"
+    Header set Connection keep-alive  
+
+    # Disable caceh for this files
+    <FilesMatch "\.(html|htm|rtf|rtx|txt|xsd|xsl|xml|json)$">
+        Header append Cache-Control "public"
+        Header unset Last-Modified
+    </FilesMatch>
+
+    # Allow access to web fonts from all domains.
+    <FilesMatch "\.(eot|otf|tt[cf]|woff2?)$">
+        Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
+
+    ### Send CORS headers if browsers request them; enabled by default for images. ###
+    <IfModule mod_setenvif.c>
+        # mod_headers, y u no match by Content-Type?!
+        <FilesMatch "\.(cur|gif|png|jpe?g|svgz?|ico|webp)$">
+            SetEnvIf Origin ":" IS_CORS
+            Header set Access-Control-Allow-Origin "*" env=IS_CORS
+        </FilesMatch>
+    </IfModule>
+</IfModule>
+
+# Gzip compression
+<IfModule mod_deflate.c>
+    # Compress all output labeled with one of the following MIME-types
+    <IfModule mod_filter.c>
+        AddOutputFilterByType DEFLATE application/javascript
+        AddOutputFilterByType DEFLATE application/json
+        AddOutputFilterByType DEFLATE application/atom+xml
+        AddOutputFilterByType DEFLATE application/rdf+xml
+        AddOutputFilterByType DEFLATE application/rss+xml
+        AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+        AddOutputFilterByType DEFLATE application/x-font
+        AddOutputFilterByType DEFLATE application/x-font-opentype
+        AddOutputFilterByType DEFLATE application/x-font-otf
+        AddOutputFilterByType DEFLATE application/x-font-truetype
+        AddOutputFilterByType DEFLATE application/x-font-ttf
+        AddOutputFilterByType DEFLATE application/x-font-woff
+        AddOutputFilterByType DEFLATE application/x-javascript
+        AddOutputFilterByType DEFLATE application/xhtml+xml
+        AddOutputFilterByType DEFLATE application/xml
+        AddOutputFilterByType DEFLATE font/opentype
+        AddOutputFilterByType DEFLATE font/eot
+        AddOutputFilterByType DEFLATE font/otf
+        AddOutputFilterByType DEFLATE font/truetype
+        AddOutputFilterByType DEFLATE font/ttf
+        AddOutputFilterByType DEFLATE image/svg+xml
+        AddOutputFilterByType DEFLATE image/x-icon
+        AddOutputFilterByType DEFLATE text/css
+        AddOutputFilterByType DEFLATE text/html
+        AddOutputFilterByType DEFLATE text/javascript
+        AddOutputFilterByType DEFLATE text/plain
+        AddOutputFilterByType DEFLATE text/xml
+        AddOutputFilterByType DEFLATE application/x-httpd-php
+        AddOutputFilterByType DEFLATE application/x-httpd-fastphp
+    </IfModule>
+
+    # Active compression
+    SetOutputFilter DEFLATE
+
+    # Force deflate for mangled headers
+    <IfModule mod_setenvif.c>
+        <IfModule mod_headers.c>
+            SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
+            RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
+            
+            # Dont compress images and other uncompressible content
+            SetEnvIfNoCase Request_URI \
+            \.(?:gif|jpe?g|png|rar|zip|exe|flv|mov|wma|mp3|avi|swf|mp?g|mp4|webm|webp)$ no-gzip dont-vary
+        </IfModule>
+    </IfModule>
+
+    <IfModule mod_headers.c>
+        Header append Vary: Accept-Encoding
+    </IfModule>
+</IfModule>
+
+<IfModule mod_mime.c>
+    AddType text/html .html_gzip
+    AddEncoding gzip .html_gzip
+    AddType x-font/woff .woff
+    AddType x-font/ttf .ttf
+    AddType application/font-woff2 .woff2
+</IfModule>
+
+<IfModule mod_setenvif.c>
+    SetEnvIfNoCase Request_URI \.html_gzip$ no-gzip
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    ##### TRY FIRST the file appended with .webp (ex. test.jpg.webp) #####
+    # Does browser explicitly support webp?
+    # OR Is request from Page Speed
+    # OR does this browser explicitly support webp
+    # AND is the request a jpg or png?
+    # AND does a .ext.webp image exist?
+    # THEN send the webp image and set the env var webp
+    RewriteCond %{HTTP_USER_AGENT} Chrome [OR]
+    RewriteCond %{HTTP_USER_AGENT} "Google Page Speed Insights" [OR]
+    RewriteCond %{HTTP_ACCEPT} image/webp
+    RewriteCond %{REQUEST_URI} ^(.+)\.(?:jpe?g|png)$
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.webp -f
+    RewriteRule ^(.+)$ $1.webp [NC,T=image/webp,E=webp,L]
+    ##### IF NOT, try the file with replaced extension (test.webp) #####
+    # AND is the request a jpg or png? (also grab the basepath %1 to match in the next rule)
+    # AND does a .ext.webp image exist?
+    # THEN send the webp image and set the env var webp
+    RewriteCond %{HTTP_USER_AGENT} Chrome [OR]
+    RewriteCond %{HTTP_USER_AGENT} "Google Page Speed Insights" [OR]
+    RewriteCond %{HTTP_ACCEPT} image/webp
+    RewriteCond %{REQUEST_URI} ^(.+)\.(?:jpe?g|png)$
+    RewriteCond %{DOCUMENT_ROOT}/%1.webp -f
+    RewriteRule (.+)\.(?:jpe?g|png)$ $1.webp [NC,T=image/webp,E=webp,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    # If REDIRECT_webp env var exists, append Accept to the Vary header
+    Header append Vary Accept env=REDIRECT_webp
+</IfModule>
+
+AddType image/webp .webp   
+############################################
+##  END WPCacheOn .htaccess optimizations ##
+############################################

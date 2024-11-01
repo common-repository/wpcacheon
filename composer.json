@@ -1,0 +1,18 @@
+{
+    "autoload": {
+        "psr-4": {
+            "WP_Cache_On\\": "includes/",
+            "WP_Cache_On\\Admin\\": "admin/",
+            "WP_Cache_On\\Public\\": "public/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "phpcompatibility/phpcompatibility-wp": "*"
+    }
+}
